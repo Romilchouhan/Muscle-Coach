@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b0d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Muscle Coach" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <title>Muscle Coach</title>
+  <style>
+    :root{--bg:#0b0b0d;--card:#17171b;--card2:#121216;--muted:#9696a0;--text:#f7f7f8;--accent:#7c5cff;--accent2:#2dd4bf;--ring:#292932;--line:#292932;--warn:#ffcc66}
+    *{box-sizing:border-box} html{background:var(--bg)}
+    body{margin:0;background:linear-gradient(180deg,#0b0b0d 0%,#101014 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;min-height:100vh}
+    .wrap{max-width:620px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 16px calc(env(safe-area-inset-bottom) + 90px)}
+    h1{font-size:30px;letter-spacing:-.7px;margin:0 0 4px}.sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+    .tabs{position:sticky;top:8px;z-index:20;display:grid;grid-template-columns:1fr 1fr;gap:6px;background:rgba(20,20,24,.88);backdrop-filter:blur(16px);border:1px solid #292932;border-radius:16px;padding:5px;margin-bottom:14px}
+    .tab{background:transparent;color:#a9a9b3;padding:10px}.tab.active{background:#2a2739;color:white;box-shadow:0 4px 18px rgba(0,0,0,.25)}
+    .page{display:none}.page.active{display:block}
+    .hero{display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:center;background:rgba(23,23,27,.94);border:1px solid #26262f;border-radius:24px;padding:18px;box-shadow:0 16px 48px rgba(0,0,0,.28)}
+    .ring{width:150px;height:150px;position:relative}.ring svg{width:150px;height:150px;transform:rotate(-90deg)}.ring circle{fill:none;stroke-width:12}.ring .bg{stroke:var(--ring)}.ring .fg{stroke:url(#g);stroke-linecap:round;transition:stroke-dashoffset .35s ease}.ring .center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column}.big{font-size:31px;font-weight:760}.small{font-size:12px;color:var(--muted)}
+    .hero h2{font-size:18px;margin:0 0 8px}.hero p{font-size:14px;color:var(--muted);line-height:1.42;margin:0}
+    .section-title{margin:22px 0 8px;font-size:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.card{background:var(--card);border:1px solid #26262f;border-radius:20px;padding:16px}.card h3{margin:0 0 10px;font-size:16px}
+    button{appearance:none;border:none;border-radius:14px;background:#24242b;color:var(--text);padding:12px 14px;font-size:15px;font-weight:650;width:100%;cursor:pointer}button.primary{background:linear-gradient(135deg,var(--accent),#5a44d8)}button.secondary{background:#1f2026}button.good{background:#153d37;color:#b9fff1}button.ghost{background:transparent;border:1px solid #30303a}button:active{transform:scale(.99)}
+    .suggestion{background:var(--card);border:1px solid #26262f;border-radius:18px;padding:15px;margin-top:10px}.suggestion .top{display:flex;justify-content:space-between;gap:8px;align-items:start}.suggestion strong{font-size:16px}.badge{font-size:12px;background:#23232a;border-radius:999px;padding:5px 8px;color:#c9c9d0;white-space:nowrap}.suggestion p{color:var(--muted);font-size:13px;margin:7px 0 12px;line-height:1.4}.row{display:flex;gap:8px}.row button{flex:1}
+    .chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 2px}.chip{width:auto;white-space:nowrap;padding:10px 12px;border-radius:999px;background:#1d1d22;border:1px solid #2a2a33}.chip.active{background:#2c254a;border-color:#4b3f7a}
+    .history{font-size:13px;color:var(--muted);line-height:1.55}.footer{margin-top:18px;color:#777782;font-size:12px;text-align:center}.install{display:none;margin-top:12px}
+    input[type=number]{width:84px;background:#111116;color:white;border:1px solid #30303a;border-radius:10px;padding:8px}.goal-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .workout-head{background:linear-gradient(135deg,#1a1830,#14151b);border:1px solid #2b2942;border-radius:24px;padding:18px}.eyebrow{font-size:12px;color:#aaa4dd;text-transform:uppercase;letter-spacing:.8px;font-weight:700}.workout-head h2{font-size:27px;margin:6px 0 4px}.meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.pill{font-size:12px;border:1px solid #363643;border-radius:999px;padding:6px 9px;color:#c7c7cf;background:#19191f}
+    .exercise{background:var(--card);border:1px solid #26262f;border-radius:18px;padding:14px;margin-top:10px}.exercise-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.exercise-title{font-size:16px;font-weight:700}.exercise-detail{font-size:13px;color:var(--muted);margin-top:3px}.check{width:40px;height:40px;padding:0;border-radius:50%;font-size:18px;flex:0 0 auto}.check.done{background:#153d37;color:#b9fff1}.swap{width:auto;font-size:12px;padding:8px 10px;margin-top:10px}
+    .progress-bar{height:8px;border-radius:999px;background:#292932;overflow:hidden;margin:12px 0 6px}.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;transition:width .25s}.work-note{font-size:13px;color:var(--muted);line-height:1.5}.rest-card{border:1px dashed #3d3d48;background:#141419}.warning{font-size:12px;color:var(--warn);margin-top:8px}
+    .schedule{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.daybox{background:#17171b;border:1px solid #292932;border-radius:16px;padding:12px;text-align:center;cursor:pointer;transition:.18s transform,.18s border-color,.18s background}.daybox:hover{transform:translateY(-1px)}.daybox strong{display:block;font-size:13px}.daybox span{display:block;font-size:11px;color:var(--muted);margin-top:4px}.daybox.next{border-color:#6557b7;background:#201d32}.daybox.suggested::after{content:"Suggested";display:block;font-size:9px;color:#aaa4dd;margin-top:6px;letter-spacing:.4px}.checkpoint.selected{background:#153d37;color:#b9fff1;border:1px solid #245e55}.checkpoint{border:1px solid transparent}.tiny-action{width:auto;font-size:12px;padding:8px 10px}
+    @media(max-width:460px){.hero{grid-template-columns:1fr;text-align:center}.ring{margin:0 auto}.grid{grid-template-columns:1fr}.schedule{grid-template-columns:1fr 1fr 1fr}.workout-head h2{font-size:24px}}
+  
+    .nutrient-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .nutrient-card{background:var(--card);border:1px solid #26262f;border-radius:16px;padding:12px}
+    .nutrient-head{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:7px}
+    .nutrient-head strong{font-size:13px}
+    .microbar{height:7px;background:#292932;border-radius:999px;overflow:hidden}
+    .microfill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width .3s ease}
+    .gap-card{background:linear-gradient(180deg,#17171b,#131318);border:1px solid #2b2b34;border-radius:20px;padding:15px;margin-top:12px}
+    .gap-card h3{margin:0 0 7px;font-size:16px}
+    .gap-list{display:grid;gap:8px;margin-top:10px}
+    .gap-item{background:#111116;border:1px solid #26262f;border-radius:13px;padding:10px;font-size:13px;color:#d9d9df;line-height:1.35}
+    .meal-micros{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 2px}
+    .microbadge{font-size:11px;background:#202028;color:#bfc0ca;padding:4px 7px;border-radius:999px}
+    .trend{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;align-items:end;height:135px;margin-top:12px}
+    .trend-col{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;height:100%}
+    .trend-bar-wrap{height:92px;width:100%;display:flex;align-items:end;justify-content:center;background:#111116;border-radius:10px;padding:4px}
+    .trend-bar{width:70%;min-height:3px;background:linear-gradient(180deg,var(--accent2),var(--accent));border-radius:7px 7px 4px 4px}
+    .trend-label{font-size:10px;color:var(--muted)}
+    .trend-value{font-size:9px;color:#c8c8d0}
+    .estimate-note{font-size:11px;color:#777782;line-height:1.4;margin-top:8px}
+    @media(max-width:460px){.nutrient-grid{grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Muscle Coach</h1>
+  <div class="sub">Protein + 3-day strength plan, built for low-friction consistency.</div>
+  <div class="tabs"><button class="tab active" data-page="nutrition">Protein</button><button class="tab" data-page="workout">Workout</button></div>
+
+  <main id="nutrition" class="page active">
+    <section class="hero">
+      <div class="ring"><svg viewBox="0 0 150 150"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c5cff"/><stop offset="100%" stop-color="#2dd4bf"/></linearGradient></defs><circle class="bg" cx="75" cy="75" r="58"></circle><circle class="fg" id="ringFg" cx="75" cy="75" r="58"></circle></svg><div class="center"><div class="big"><span id="proteinNow">0</span>g</div><div class="small">of <span id="goalLabel">130</span>g</div></div></div>
+      <div><h2 id="coachHeadline">Start easy.</h2><p id="coachText">Tap a checkpoint or ask what you should eat next. You do not need to log every ingredient.</p><button class="primary" id="whatNowBtn" style="margin-top:14px">What should I eat now?</button><button class="secondary install" id="installBtn">Add to Home Screen</button></div>
+    </section>
+
+    <h2 class="section-title">Daily nutrition</h2>
+    <div class="nutrient-grid" id="nutrientGrid"></div>
+    <div class="gap-card">
+      <h3>Nutrition gaps</h3>
+      <div class="small">Food-first suggestions based on what you have logged today.</div>
+      <div class="gap-list" id="gapList"></div>
+      <div class="estimate-note">Micronutrients are rough estimates from standard serving sizes, not laboratory measurements. Supplements should not be based on this screen alone.</div>
+    </div>
+
+    <h2 class="section-title">Quick checkpoints</h2>
+    <div class="grid">
+      <div class="card"><h3>Morning</h3><button class="checkpoint" data-protein="35" data-name="Protein-heavy breakfast" data-meal="breakfast">Protein-heavy breakfast</button></div>
+      <div class="card"><h3>Lunch</h3><button class="checkpoint" data-protein="25" data-name="Balanced lunch" data-meal="lunch">Balanced lunch</button></div>
+      <div class="card"><h3>Snack</h3><button class="checkpoint" data-protein="15" data-name="Protein snack" data-meal="snack">Protein snack</button></div>
+      <div class="card"><h3>Dinner</h3><button class="checkpoint" data-protein="30" data-name="Protein-focused dinner" data-meal="dinner">Protein-focused dinner</button></div>
+    </div>
+
+    <h2 class="section-title">What sounds good?</h2>
+    <div class="chips"><button class="chip active" data-filter="any">Anything</button><button class="chip" data-filter="veg">Vegetarian</button><button class="chip" data-filter="egg">Eggs</button><button class="chip" data-filter="quick">Quick</button><button class="chip" data-filter="light">Light</button></div>
+    <div class="small" id="mealContext" style="margin:8px 2px 2px">Breakfast ideas</div><div id="suggestions"></div>
+
+    <h2 class="section-title">7-day protein trend</h2>
+    <div class="card">
+      <div class="trend" id="trendChart"></div>
+      <div class="estimate-note">Days you did not use the app may appear as zero.</div>
+    </div>
+
+    <h2 class="section-title">Settings</h2>
+    <div class="card"><div class="goal-row"><div><strong>Daily protein goal</strong><div class="small" style="margin-top:4px">Practical target: about 130–150g/day</div></div><input id="goalInput" type="number" min="80" max="220" step="5" value="130"/></div></div>
+    <h2 class="section-title">Today</h2><div class="card history" id="history">Nothing logged yet.</div><button class="ghost tiny-action" id="resetToday" style="margin-top:10px">Reset today's protein</button>
+  </main>
+
+  <main id="workout" class="page">
+    <section class="workout-head">
+      <div class="eyebrow" id="workEyebrow">Next session</div>
+      <h2 id="workTitle">Chest + Triceps</h2>
+      <div class="work-note" id="workIntro">Focused upper-body session designed to fit inside about 60–75 minutes.</div>
+      <div class="meta"><span class="pill" id="durationPill">60–70 min</span><span class="pill">3 days/week</span><span class="pill">Alternate days</span></div>
+      <div class="progress-bar"><div id="workProgress" class="progress-fill"></div></div><div class="small" id="workProgressText">0 of 5 exercises completed</div>
+    </section>
+
+    <h2 class="section-title">Rotation</h2>
+    <div class="schedule"><div class="daybox" id="rot0" data-plan="0"><strong>A</strong><span>Chest + Triceps</span></div><div class="daybox" id="rot1" data-plan="1"><strong>B</strong><span>Back + Biceps</span></div><div class="daybox" id="rot2" data-plan="2"><strong>C</strong><span>Legs + Shoulders</span></div></div>
+    <div class="warning">Use at least one rest day between sessions when possible. Your run can sit on a rest day if it stays easy/moderate.</div>
+
+    <h2 class="section-title">Today's exercises</h2><div id="exerciseList"></div>
+    <div class="row" style="margin-top:12px"><button class="primary" id="finishWorkout">Finish workout</button><button class="ghost" id="skipWorkout">Rest today</button></div>
+
+    <h2 class="section-title">How to use this plan</h2>
+    <div class="card work-note">Keep most working sets around <strong>1–3 reps in reserve</strong>. When you reach the top of the rep range with clean form for every set, add a small amount of weight next time. Rest around 2–3 minutes on compound lifts and 60–90 seconds on isolation work. Warm-up sets do not count as working sets.</div>
+  </main>
+
+  <div class="footer">Local-only data • offline after first load • no ChatGPT account/API key required</div>
+</div>
+<script>
+const foods=[{"name":"4 eggs + whey + muesli + milk","p":52,"meal":"breakfast","tags":["egg","quick"],"desc":"Excellent after a morning workout and easy to prepare.","n":{"ca":430,"mg":125,"fe":5.2,"zn":4.7,"k":900,"fiber":5.0,"b12":3.0,"d":4.8}},{"name":"Paneer moong chilla + curd","p":34,"meal":"breakfast","tags":["veg"],"desc":"A filling Indian breakfast with paneer and lentil protein.","n":{"ca":520,"mg":125,"fe":3.4,"zn":3.1,"k":720,"fiber":7.0,"b12":1.1,"d":0.2}},{"name":"Greek yogurt + whey + fruit + muesli","p":38,"meal":"breakfast","tags":["veg","quick","light"],"desc":"Cold, fast and ideal when you do not want a cooked breakfast.","n":{"ca":440,"mg":105,"fe":2.2,"zn":2.8,"k":780,"fiber":6.5,"b12":1.5,"d":1.0}},{"name":"Egg bhurji + 2 toast + milk","p":34,"meal":"breakfast","tags":["egg","quick"],"desc":"A change from boiled eggs while staying practical for mornings.","n":{"ca":370,"mg":90,"fe":4.3,"zn":3.6,"k":670,"fiber":4.0,"b12":2.4,"d":3.4}},{"name":"Paneer stuffed besan chilla","p":32,"meal":"breakfast","tags":["veg"],"desc":"Savory breakfast with good protein and plenty of variety.","n":{"ca":410,"mg":120,"fe":3.8,"zn":2.8,"k":650,"fiber":6.0,"b12":0.8,"d":0.1}},{"name":"Overnight oats + whey + milk","p":35,"meal":"breakfast","tags":["veg","quick"],"desc":"Prepare the night before for a near-zero-effort morning.","n":{"ca":390,"mg":150,"fe":3.4,"zn":3.3,"k":720,"fiber":7.0,"b12":1.6,"d":1.5}},{"name":"Idli + sambar + 3 eggs","p":30,"meal":"breakfast","tags":["egg"],"desc":"South Indian breakfast with lentils plus eggs for extra protein.","n":{"ca":180,"mg":105,"fe":4.2,"zn":3.0,"k":750,"fiber":6.0,"b12":1.8,"d":3.0}},{"name":"Poha + peanuts + whey shake","p":32,"meal":"breakfast","tags":["veg","quick"],"desc":"Keeps a familiar breakfast while making the protein much stronger.","n":{"ca":250,"mg":130,"fe":4.0,"zn":3.0,"k":700,"fiber":5.5,"b12":0.8,"d":0.8}},{"name":"Rajma + rice + curd","p":28,"meal":"lunch","tags":["veg"],"desc":"A familiar home lunch; add curd to lift the protein.","n":{"ca":310,"mg":150,"fe":5.0,"zn":3.2,"k":1050,"fiber":13.0,"b12":0.7,"d":0.1}},{"name":"Chole + 2 rotis + curd","p":29,"meal":"lunch","tags":["veg"],"desc":"Filling vegetarian lunch that rotates well with rajma and dal.","n":{"ca":330,"mg":165,"fe":6.1,"zn":3.9,"k":980,"fiber":15.0,"b12":0.7,"d":0.1}},{"name":"Paneer bhurji + 2 rotis + salad","p":38,"meal":"lunch","tags":["veg"],"desc":"Protein-focused lunch without needing non-veg at home.","n":{"ca":520,"mg":115,"fe":3.6,"zn":3.8,"k":760,"fiber":7.0,"b12":1.0,"d":0.2}},{"name":"Soy chunk pulao + raita","p":36,"meal":"lunch","tags":["veg"],"desc":"High-protein lunch that feels different from dal-roti.","n":{"ca":360,"mg":170,"fe":8.0,"zn":4.1,"k":1050,"fiber":10.0,"b12":0.7,"d":0.1}},{"name":"Dal + rice + curd + roasted chana","p":30,"meal":"lunch","tags":["veg"],"desc":"A normal Indian lunch made more protein-friendly with simple add-ons.","n":{"ca":300,"mg":175,"fe":5.7,"zn":3.7,"k":1000,"fiber":12.0,"b12":0.7,"d":0.1}},{"name":"Chicken tikka + roti + salad","p":45,"meal":"lunch","tags":["quick"],"desc":"Use occasionally when non-veg is available at home or outside.","n":{"ca":120,"mg":105,"fe":3.1,"zn":4.8,"k":920,"fiber":5.0,"b12":1.3,"d":0.4}},{"name":"Sambar rice + curd + sprouts salad","p":26,"meal":"lunch","tags":["veg","light"],"desc":"A lighter lunch with lentils, fermented dairy and vegetables.","n":{"ca":300,"mg":145,"fe":4.5,"zn":3.0,"k":950,"fiber":11.0,"b12":0.7,"d":0.1}},{"name":"Palak paneer + 2 rotis","p":34,"meal":"lunch","tags":["veg"],"desc":"Useful when you want paneer plus a magnesium- and iron-rich leafy vegetable.","n":{"ca":650,"mg":170,"fe":6.0,"zn":3.8,"k":1100,"fiber":8.0,"b12":0.9,"d":0.2}},{"name":"Roasted chana + milk + fruit","p":20,"meal":"snack","tags":["veg","quick"],"desc":"Easy evening bridge without turning the snack into another meal.","n":{"ca":330,"mg":115,"fe":2.5,"zn":2.2,"k":800,"fiber":8.0,"b12":1.2,"d":1.2}},{"name":"Whey shake + banana","p":27,"meal":"snack","tags":["veg","quick","light"],"desc":"Fastest way to close a protein gap on a busy day.","n":{"ca":180,"mg":55,"fe":0.8,"zn":1.0,"k":620,"fiber":3.0,"b12":0.5,"d":0.5}},{"name":"Greek yogurt + fruit","p":18,"meal":"snack","tags":["veg","quick","light"],"desc":"Light option when dinner is not far away.","n":{"ca":260,"mg":45,"fe":0.8,"zn":1.5,"k":560,"fiber":4.0,"b12":1.0,"d":0.3}},{"name":"2 eggs + buttermilk","p":16,"meal":"snack","tags":["egg","quick","light"],"desc":"Simple savory snack when you do not want another shake.","n":{"ca":230,"mg":45,"fe":2.0,"zn":2.0,"k":420,"fiber":0.0,"b12":1.8,"d":2.2}},{"name":"Paneer tikka bites","p":24,"meal":"snack","tags":["veg","quick"],"desc":"A higher-protein snack for days when lunch was light.","n":{"ca":430,"mg":45,"fe":1.2,"zn":2.4,"k":300,"fiber":1.0,"b12":0.8,"d":0.1}},{"name":"Sprouts chaat + curd","p":18,"meal":"snack","tags":["veg","light"],"desc":"Fresh option with crunch and variety.","n":{"ca":210,"mg":100,"fe":3.0,"zn":2.0,"k":700,"fiber":8.0,"b12":0.5,"d":0.1}},{"name":"Pumpkin seeds + yogurt + fruit","p":18,"meal":"snack","tags":["veg","quick","light"],"desc":"Especially useful when magnesium or zinc is lagging.","n":{"ca":270,"mg":190,"fe":3.0,"zn":3.5,"k":650,"fiber":5.0,"b12":0.8,"d":0.2}},{"name":"Peanut chaat + chaas","p":17,"meal":"snack","tags":["veg","quick"],"desc":"Crunchy snack with magnesium, potassium and healthy fats.","n":{"ca":180,"mg":145,"fe":2.6,"zn":2.8,"k":700,"fiber":6.0,"b12":0.5,"d":0.1}},{"name":"Tofu stir-fry + rice","p":30,"meal":"dinner","tags":["veg","light"],"desc":"Lighter dinner with vegetables and a solid protein base.","n":{"ca":430,"mg":145,"fe":5.0,"zn":3.0,"k":920,"fiber":8.0,"b12":0.0,"d":0.0}},{"name":"Paneer tikka + 2 rotis + salad","p":36,"meal":"dinner","tags":["veg"],"desc":"A proper dinner that feels different from paneer bhurji.","n":{"ca":540,"mg":105,"fe":3.2,"zn":3.7,"k":720,"fiber":7.0,"b12":1.0,"d":0.2}},{"name":"Egg curry + rice + salad","p":29,"meal":"dinner","tags":["egg"],"desc":"Turns eggs into a full dinner rather than repeating breakfast.","n":{"ca":180,"mg":95,"fe":4.1,"zn":3.3,"k":780,"fiber":5.0,"b12":2.4,"d":3.8}},{"name":"Soy keema + 2 rotis + curd","p":35,"meal":"dinner","tags":["veg"],"desc":"High-protein vegetarian dinner with a different texture and flavor.","n":{"ca":390,"mg":175,"fe":7.2,"zn":4.0,"k":1050,"fiber":11.0,"b12":0.7,"d":0.1}},{"name":"Moong dal khichdi + paneer side","p":32,"meal":"dinner","tags":["veg","light"],"desc":"Comfort-food dinner that still helps you finish the day strong.","n":{"ca":400,"mg":145,"fe":4.5,"zn":3.4,"k":900,"fiber":9.0,"b12":0.8,"d":0.1}},{"name":"Grilled chicken + rice + vegetables","p":45,"meal":"dinner","tags":["light"],"desc":"Occasional non-veg dinner when it is available.","n":{"ca":110,"mg":125,"fe":3.0,"zn":4.5,"k":1150,"fiber":7.0,"b12":1.4,"d":0.5}},{"name":"Palak tofu + 2 rotis","p":31,"meal":"dinner","tags":["veg","light"],"desc":"A useful dinner when magnesium, iron or calcium is behind.","n":{"ca":560,"mg":195,"fe":7.0,"zn":3.4,"k":1200,"fiber":10.0,"b12":0.0,"d":0.0}},{"name":"Masoor dal + jeera rice + curd","p":27,"meal":"dinner","tags":["veg"],"desc":"Simple home dinner with fiber, iron and magnesium from lentils.","n":{"ca":290,"mg":155,"fe":5.8,"zn":3.2,"k":1000,"fiber":12.0,"b12":0.7,"d":0.1}}];
+const plans=[
+{title:"Chest + Triceps",duration:"60–70 min",intro:"Keep chest quality high without forcing shoulders into the same session.",ex:[
+{name:"Barbell or Dumbbell Bench Press",sets:"3 sets × 6–10 reps",alts:["Machine Chest Press","Dumbbell Bench Press"]},
+{name:"Incline Dumbbell Press",sets:"3 sets × 8–12 reps",alts:["Incline Machine Press","Low-Incline Smith Press"]},
+{name:"Cable or Pec-Deck Fly",sets:"3 sets × 10–15 reps",alts:["Dumbbell Fly","Cable Crossover"]},
+{name:"Triceps Rope Pushdown",sets:"3 sets × 10–15 reps",alts:["Straight-Bar Pushdown","Assisted Dips"]},
+{name:"Overhead Triceps Extension",sets:"3 sets × 10–15 reps",alts:["Single-Arm Cable Extension","Dumbbell Overhead Extension"]}
+]},
+{title:"Back + Biceps",duration:"60–70 min",intro:"Enough pulling volume for back growth while leaving direct time for biceps.",ex:[
+{name:"Lat Pulldown",sets:"3 sets × 8–12 reps",alts:["Assisted Pull-Up","Neutral-Grip Pulldown"]},
+{name:"Chest-Supported Row",sets:"3 sets × 8–12 reps",alts:["Seated Cable Row","Machine Row"]},
+{name:"Single-Arm Cable or Dumbbell Row",sets:"3 sets × 8–12 reps/side",alts:["One-Arm Machine Row","Landmine Row"]},
+{name:"Incline Dumbbell Curl",sets:"3 sets × 8–12 reps",alts:["EZ-Bar Curl","Cable Curl"]},
+{name:"Hammer Curl",sets:"3 sets × 10–15 reps",alts:["Rope Hammer Curl","Cross-Body Hammer Curl"]}
+]},
+{title:"Legs + Shoulders",duration:"70–80 min",intro:"Legs get the first half of the session; shoulders stay concise and focused.",ex:[
+{name:"Squat or Leg Press",sets:"3 sets × 6–10 reps",alts:["Hack Squat","Goblet Squat"]},
+{name:"Romanian Deadlift",sets:"3 sets × 8–12 reps",alts:["Seated Leg Curl","Dumbbell RDL"]},
+{name:"Leg Curl",sets:"3 sets × 10–15 reps",alts:["Lying Leg Curl","Seated Leg Curl"]},
+{name:"Dumbbell or Machine Shoulder Press",sets:"3 sets × 8–12 reps",alts:["Smith Shoulder Press","Arnold Press"]},
+{name:"Lateral Raise",sets:"3 sets × 12–20 reps",alts:["Cable Lateral Raise","Machine Lateral Raise"]}
+]}
+];
+
+const nutrientMeta={
+  ca:{label:"Calcium",unit:"mg",target:1000},
+  mg:{label:"Magnesium",unit:"mg",target:400},
+  fe:{label:"Iron",unit:"mg",target:8},
+  zn:{label:"Zinc",unit:"mg",target:11},
+  k:{label:"Potassium",unit:"mg",target:3400},
+  fiber:{label:"Fiber",unit:"g",target:30},
+  b12:{label:"Vitamin B12",unit:"µg",target:2.4},
+  d:{label:"Vitamin D",unit:"µg",target:15}
+};
+const zeroN=()=>({ca:0,mg:0,fe:0,zn:0,k:0,fiber:0,b12:0,d:0});
+const checkpointN={
+  "Protein-heavy breakfast":{ca:300,mg:90,fe:2.5,zn:2.5,k:650,fiber:4,b12:1.5,d:2},
+  "Balanced lunch":{ca:250,mg:120,fe:4,zn:2.8,k:850,fiber:9,b12:.4,d:.1},
+  "Protein snack":{ca:200,mg:70,fe:1.5,zn:1.5,k:500,fiber:4,b12:.5,d:.3},
+  "Protein-focused dinner":{ca:300,mg:120,fe:3.5,zn:3,k:850,fiber:8,b12:.6,d:.3}
+};
+let state=JSON.parse(localStorage.getItem("muscleCoachState")||"{}");
+const today=new Date().toISOString().slice(0,10);
+function archivePreviousDay(){
+  if(state.date && state.date!==today){
+    state.trend=state.trend||[];
+    state.trend=state.trend.filter(x=>x.date!==state.date);
+    state.trend.push({date:state.date,protein:state.protein||0,goal:state.goal||130});
+    state.trend=state.trend.slice(-14);
+  }
+}
+archivePreviousDay();
+if(state.date!==today){
+  state={...state,date:today,protein:0,nutrients:zeroN(),history:[],mealCheckpoints:{},workCompletedByPlan:{0:[],1:[],2:[]}};
+}
+state.goal=state.goal||130;
+state.history=state.history||[];
+state.nutrients={...zeroN(),...(state.nutrients||{})};
+state.trend=state.trend||[];
+state.activeMeal=state.activeMeal||"breakfast";
+state.recentByMeal=state.recentByMeal||{breakfast:[],lunch:[],snack:[],dinner:[]};
+state.rotation=Number.isInteger(state.rotation)?state.rotation:0;
+state.selectedPlan=Number.isInteger(state.selectedPlan)?state.selectedPlan:state.rotation;
+state.exerciseSwaps=state.exerciseSwaps||{};
+state.mealCheckpoints=state.mealCheckpoints||{};
+state.workCompletedByPlan=state.workCompletedByPlan||{0:[],1:[],2:[]};
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function save(){localStorage.setItem("muscleCoachState",JSON.stringify(state))}
+function addNutrients(n,dir=1){
+  Object.keys(nutrientMeta).forEach(k=>state.nutrients[k]=Math.max(0,(state.nutrients[k]||0)+dir*(n?.[k]||0)));
+}
+function nutrientPct(k){return Math.min(100,Math.round((state.nutrients[k]||0)/nutrientMeta[k].target*100))}
+function fmt(v,k){return (k==="b12"||k==="d")?Number(v).toFixed(1):Math.round(v)}
+function updateNutrients(){
+  nutrientGrid.innerHTML=Object.entries(nutrientMeta).map(([k,m])=>{
+    const v=state.nutrients[k]||0,p=nutrientPct(k);
+    return `<div class="nutrient-card"><div class="nutrient-head"><strong>${m.label}</strong><span>${fmt(v,k)} / ${m.target}${m.unit}</span></div><div class="microbar"><div class="microfill" style="width:${p}%"></div></div></div>`;
+  }).join("");
+  updateGapCoach();
+}
+const foodGapSuggestions={
+  ca:"Try curd, milk, paneer, ragi or calcium-set tofu.",
+  mg:"Try pumpkin seeds, peanuts, spinach, dal, rajma or chana.",
+  fe:"Try palak, lentils, rajma, chole or soy; pair plant sources with vitamin-C-rich food.",
+  zn:"Try pumpkin seeds, dairy, eggs, chana or soy.",
+  k:"Try banana, potatoes, dal, beans, curd, coconut water or leafy vegetables.",
+  fiber:"Add fruit, salad, oats, whole grains, beans or sprouts.",
+  b12:"Eggs and dairy help; non-veg foods are richer sources. Fortified foods can also contribute.",
+  d:"Food alone is often a weak source; eggs, fortified dairy and fatty fish can help, while vitamin-D status is best assessed separately."
+};
+function updateGapCoach(){
+  const gaps=Object.keys(nutrientMeta)
+    .map(k=>({k,p:nutrientPct(k)}))
+    .filter(x=>x.p<85)
+    .sort((a,b)=>a.p-b.p)
+    .slice(0,3);
+  gapList.innerHTML=gaps.length?gaps.map(x=>`<div class="gap-item"><strong>${nutrientMeta[x.k].label}: ${x.p}%</strong><br>${foodGapSuggestions[x.k]}</div>`).join(""):`<div class="gap-item"><strong>No major tracked gaps right now.</strong><br>Keep meals varied rather than chasing every number perfectly.</div>`;
+}
+function updateTrend(){
+  const days=[];
+  const map=new Map((state.trend||[]).map(x=>[x.date,x]));
+  map.set(today,{date:today,protein:state.protein,goal:state.goal});
+  for(let i=6;i>=0;i--){
+    const d=new Date(); d.setDate(d.getDate()-i);
+    const key=d.toISOString().slice(0,10);
+    const rec=map.get(key)||{date:key,protein:0,goal:state.goal};
+    days.push(rec);
+  }
+  trendChart.innerHTML=days.map(x=>{
+    const dt=new Date(x.date+"T12:00:00");
+    const label=dt.toLocaleDateString(undefined,{weekday:"short"}).slice(0,2);
+    const h=Math.min(100,Math.round((x.protein/(x.goal||state.goal))*100));
+    return `<div class="trend-col"><div class="trend-value">${Math.round(x.protein)}g</div><div class="trend-bar-wrap"><div class="trend-bar" style="height:${Math.max(3,h)}%"></div></div><div class="trend-label">${label}</div></div>`;
+  }).join("");
+}
+function updateNutrition(){
+  proteinNow.textContent=Math.round(state.protein);
+  goalLabel.textContent=state.goal;
+  goalInput.value=state.goal;
+  const c=2*Math.PI*58,pct=Math.min(state.protein/state.goal,1);
+  ringFg.style.strokeDasharray=c; ringFg.style.strokeDashoffset=c*(1-pct);
+  const left=Math.max(state.goal-state.protein,0);
+  if(state.protein===0){coachHeadline.textContent="Start easy.";coachText.textContent="Use a checkpoint or log one of the suggested meals. Micronutrients will update automatically."}
+  else if(left>50){coachHeadline.textContent=`${Math.round(left)}g to go`;coachText.textContent="You still have room for a substantial protein meal plus a snack."}
+  else if(left>20){coachHeadline.textContent=`${Math.round(left)}g to go`;coachText.textContent="One strong meal can get you close. Suggestions also consider your largest micronutrient gaps."}
+  else if(left>0){coachHeadline.textContent=`Almost there — ${Math.round(left)}g left`;coachText.textContent="A smaller protein option is enough; use the gap card to add variety."}
+  else{coachHeadline.textContent="Protein goal reached";coachText.textContent="No need to force extra protein. Use the remaining meals to improve variety and micronutrient coverage."}
+  history.innerHTML=state.history.length?state.history.slice().reverse().map(x=>`<div>• ${x.name} <strong>${x.p>=0?'+':''}${Math.round(x.p)}g</strong></div>`).join(""):"Nothing logged yet.";
+  $$('.checkpoint').forEach(b=>{const key=b.dataset.name,selected=!!state.mealCheckpoints[key];b.classList.toggle('selected',selected);b.textContent=(selected?'✓ ':'')+key});
+  updateNutrients(); updateTrend();
+}
+const mealLabels={breakfast:"Breakfast",lunch:"Lunch",snack:"Snack",dinner:"Dinner"};
+function setMealContext(meal){state.activeMeal=meal;save();mealContext.textContent=`${mealLabels[meal]} ideas`;suggest()}
+$$('.checkpoint').forEach(b=>b.onclick=()=>{
+  const name=b.dataset.name,p=Number(b.dataset.protein),meal=b.dataset.meal,was=!!state.mealCheckpoints[name],n=checkpointN[name]||zeroN();
+  state.mealCheckpoints[name]=!was;
+  state.protein=Math.max(0,state.protein+(was?-p:p));
+  addNutrients(n,was?-1:1);
+  state.history.push({name:(was?'Removed ':'Added ')+name,p:was?-p:p,n,t:Date.now(),kind:"checkpoint"});
+  state.activeMeal=meal; save(); updateNutrition(); suggest();
+});
+let filter="any";
+$$('.chip').forEach(ch=>ch.onclick=()=>{$$('.chip').forEach(x=>x.classList.remove('active'));ch.classList.add('active');filter=ch.dataset.filter;suggest()});
+function gapScore(f){
+  let score=0;
+  Object.keys(nutrientMeta).forEach(k=>{
+    const ratio=(state.nutrients[k]||0)/nutrientMeta[k].target;
+    const gap=Math.max(0,1-ratio);
+    const mealContribution=Math.min(1,(f.n?.[k]||0)/nutrientMeta[k].target);
+    score+=gap*mealContribution;
+  });
+  return score;
+}
+function picks(meal=state.activeMeal){
+  const left=Math.max(state.goal-state.protein,0);
+  let pool=foods.filter(f=>f.meal===meal&&(filter==='any'||f.tags.includes(filter)));
+  if(!pool.length)pool=foods.filter(f=>f.meal===meal);
+  const recent=new Set((state.recentByMeal[meal]||[]).slice(-3));
+  let pref=pool.filter(f=>!recent.has(f.name));
+  if(pref.length<3)pref=pool;
+  const ideal=Math.min(Math.max(left,15),45);
+  pref.sort((a,b)=>{
+    const proteinA=Math.abs(a.p-ideal),proteinB=Math.abs(b.p-ideal);
+    return (proteinA-8*gapScore(a))-(proteinB-8*gapScore(b));
+  });
+  return pref.slice(0,3);
+}
+function microBadges(f){
+  const ranked=Object.keys(nutrientMeta).map(k=>({k,val:f.n?.[k]||0,frac:(f.n?.[k]||0)/nutrientMeta[k].target})).sort((a,b)=>b.frac-a.frac).slice(0,3);
+  return ranked.map(x=>`<span class="microbadge">${nutrientMeta[x.k].label} ${fmt(x.val,x.k)}${nutrientMeta[x.k].unit}</span>`).join("");
+}
+function suggest(){
+  const meal=state.activeMeal||'breakfast';
+  mealContext.textContent=`${mealLabels[meal]} ideas`;
+  suggestions.innerHTML=picks(meal).map(f=>`<div class="suggestion"><div class="top"><strong>${f.name}</strong><span class="badge">~${f.p}g protein</span></div><div class="meal-micros">${microBadges(f)}</div><p>${f.desc}</p><div class="row"><button onclick='logFood(${JSON.stringify(f.name)},${f.p},${JSON.stringify(meal)})'>I had this</button><button onclick='skipFood(${JSON.stringify(f.name)},${JSON.stringify(meal)})'>Show another</button></div></div>`).join('');
+}
+window.logFood=(n,p,meal)=>{
+  const f=foods.find(x=>x.name===n&&x.meal===meal); if(!f)return;
+  state.recentByMeal[meal]=state.recentByMeal[meal]||[];
+  state.recentByMeal[meal].push(n); state.recentByMeal[meal]=state.recentByMeal[meal].slice(-8);
+  state.protein=Math.max(0,state.protein+p); addNutrients(f.n,1);
+  state.history.push({name:n,p,nutrients:f.n,t:Date.now(),kind:"food"});
+  save(); updateNutrition(); suggest();
+};
+window.skipFood=(n,meal)=>{state.recentByMeal[meal]=state.recentByMeal[meal]||[];state.recentByMeal[meal].push(n);state.recentByMeal[meal]=state.recentByMeal[meal].slice(-8);save();suggest()};
+whatNowBtn.onclick=()=>{
+  const order=[['Protein-heavy breakfast','breakfast'],['Balanced lunch','lunch'],['Protein snack','snack'],['Protein-focused dinner','dinner']];
+  const next=order.find(([name])=>!state.mealCheckpoints[name]);
+  setMealContext(next?next[1]:'snack');
+};
+goalInput.onchange=e=>{state.goal=Math.max(80,Math.min(220,Number(e.target.value)||130));save();updateNutrition();suggest()};
+
+// Workout logic retained from v0.4
+function currentPlan(){return plans[state.selectedPlan%3]}
+function activeCompleted(){const k=state.selectedPlan%3;state.workCompletedByPlan[k]=state.workCompletedByPlan[k]||[];return state.workCompletedByPlan[k]}
+function displayExerciseName(i,e){return state.exerciseSwaps[`${state.selectedPlan}-${i}`]||e.name}
+function updateWorkout(){
+  const p=currentPlan();
+  workEyebrow.textContent=state.selectedPlan===state.rotation?'Suggested / selected session':'Selected session';
+  workTitle.textContent=p.title;durationPill.textContent=p.duration;workIntro.textContent=p.intro;
+  $$('.daybox').forEach((d,i)=>{d.classList.toggle('next',i===state.selectedPlan%3);d.classList.toggle('suggested',i===state.rotation%3)});
+  const completed=activeCompleted();
+  exerciseList.innerHTML=p.ex.map((e,i)=>{const done=completed.includes(i);return `<div class="exercise"><div class="exercise-top"><div><div class="exercise-title">${displayExerciseName(i,e)}</div><div class="exercise-detail">${e.sets}</div></div><button class="check ${done?'done':''}" onclick="toggleExercise(${i})">${done?'✓':'○'}</button></div><button class="swap ghost" onclick="swapExercise(${i})">Swap exercise</button></div>`}).join('');
+  const done=completed.length,total=p.ex.length;workProgress.style.width=`${done/total*100}%`;workProgressText.textContent=`${done} of ${total} exercises completed`;
+}
+$$('.daybox').forEach(d=>d.onclick=()=>{state.selectedPlan=Number(d.dataset.plan);save();updateWorkout()});
+window.toggleExercise=i=>{const completed=activeCompleted(),k=completed.indexOf(i);if(k>=0)completed.splice(k,1);else completed.push(i);save();updateWorkout()};
+window.swapExercise=i=>{const p=currentPlan(),e=p.ex[i],key=`${state.selectedPlan}-${i}`,current=displayExerciseName(i,e),opts=[e.name,...e.alts],idx=opts.indexOf(current),next=opts[(idx+1)%opts.length];state.exerciseSwaps[key]=next;save();updateWorkout()};
+finishWorkout.onclick=()=>{const completed=activeCompleted();if(completed.length<currentPlan().ex.length&&!confirm('Some exercises are unchecked. Finish this workout anyway?'))return;const finished=state.selectedPlan;state.workCompletedByPlan[finished]=[];state.rotation=(finished+1)%3;state.selectedPlan=state.rotation;save();updateWorkout();alert('Workout saved. Suggested next session: '+currentPlan().title)};
+skipWorkout.onclick=()=>alert('Rest day selected. You can still choose A, B, or C whenever you train.');
+$$('.tab').forEach(t=>t.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');$$('.page').forEach(x=>x.classList.remove('active'));$('#'+t.dataset.page).classList.add('active')});
+resetToday.onclick=()=>{
+  if(!confirm("Reset today's nutrition and meal checkpoints?"))return;
+  state.protein=0;state.nutrients=zeroN();state.history=[];state.mealCheckpoints={};state.activeMeal="breakfast";
+  save();updateNutrition();suggest();
+};
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;installBtn.style.display='block'});
+installBtn.onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();deferredPrompt=null;installBtn.style.display='none'}else alert('On iPhone: Share → Add to Home Screen.')};
+if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');
+updateNutrition();suggest();updateWorkout();
+</script>
+</body>
+</html>
